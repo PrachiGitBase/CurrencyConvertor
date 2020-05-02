@@ -1,0 +1,96 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    background: #ecf0f1;
+  }
+  
+  .container {
+    width: 100%;
+    height: 70%;
+  }
+  
+  .inputArea {
+    width: 100%;
+  }
+  
+  .inputArea .left {
+    width: 48%;
+    margin-top: 32px;
+    float: left;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  
+  .inputArea .left .yen article {
+    margin-top: 6px;
+  }
+  
+  .inputArea .left .yen {
+    margin-top: -38px;
+  }
+  
+  
+  .inputArea .left .yen article .content {
+    margin-top: 10px;
+  }
+  
+  .inputArea .left .yen article {
+    height: 291px;
+  }
+  
+  .inputArea .right {
+    width: 48%;
+    float: left;
+    display: inline-block;
+    box-sizing: border-box;
+  }
+  
+  h3 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  
+  textarea {
+    height: 200px;
+    width: 100%;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    margin-top: 1em;
+  }
+  
+  #main-header {
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100px;
+    padding: 0 2em;
+    font-weight: 700;
+    color: #292929;
+    background: #ecf0f1;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  #main-header h1 {
+    margin: 0;
+    font-size: 3rem;
+  }
+  
+  article {
+    margin-left: 2em;
+    padding: 1em;
+    background: #fff;
+    box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.1);
+    height:250px;
+  }
+  
+  .container {
+    width: 1000px;
+  }
+  
+  .margin-right-shift article {
+    margin-right: 2em;
+  }
+  
