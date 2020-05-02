@@ -1,23 +1,36 @@
 <div class="row">
+    <div class="alert alert-danger"   *ngIf="showErrorDiv">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
+          <i class="fa fa-times"></i> <strong>Danger!</strong> Please select the From and To select box before conversion 
+    </div>
+    <div class="alert alert-danger"   *ngIf="showAnotherErrorDiv">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
+          <i class="fa fa-times"></i> <strong>Danger!</strong> Please select different value in From and To select box 
+    </div>
 <div class='left col-md-6' >
     <div id="left-column" class="yen">
       <article>
-        <header>
-          <h3>From</h3>
-        </header>
-        <br>
         <div class="content">
                 <form [formGroup]="CurrencyFormGroup">
-                    <div class="col-md-6">
-                            <select formControlName="currencyControl">
-                                <option  *ngFor="let currName of CurrencyArr"> {{currName.Currency}}
-                                </option>
-                            </select>
+
+                  <div class="form-group col-md-12">
+                      <div class="col-md-3 left">
+                           <h3>From:</h3>
+                        </div>
+                      <div class="col-md-8 paddingTop">
+                              <select formControlName="currencyControl" class="form-control right"  value="">
+                                  <option value="" disabled selected>Select your option</option>
+                                  <option  *ngFor="let currName of newCurrencyCodeArr"> {{currName}}
+                                  </option>
+                              </select>
+                      </div>
                     </div>
                     <br>
-                    <div class="col-md-6">
-                        <input type ="text" id="yen" placeholder="Enter value in Yen" 
-                        (keyup)="convertToUsd($event)" value="{{convertDollarToYen}}" required/>
+                    <div class="form-group col-md-12">
+                        <div class="col-md-11">
+                          <input type ="text" id="yen" class="form-control" placeholder="Enter value in Yen" 
+                          (keyup)="convertFromToCurrency($event)" formControlName="fromCurrencyVal"  value="{{convertCurrencyValToFrom}}" required/>
+                        </div>
                     </div>
                 </form>
         </div>
@@ -28,35 +41,29 @@
   <div class="right col-md-6">
     <div id="right-column" class="usd">
       <article>
-        <header>
-          <h3 class="center">To</h3>
-        </header>
-        <br>
-        <div class="content">
+          <div class="content">
                 <form [formGroup]="CurrencyToGroup">
                    <div class="form-group col-md-12">
-                       <div class="col-md-6">
-                            <label class="left">Currency To:</label>
+                       <div class="col-md-3 left">
+                           <h3>To:</h3> 
                        </div>
-                       <div class="col-md-6">
-                            <select formControlName="currencyToControl" class="form-control right">
-                                <option  *ngFor="let currName of CurrencyArr"> {{currName.Currency}}
+                       <div class="col-md-8 paddingTop">
+                            <select formControlName="currencyToControl" class="form-control right" value="">
+                                <option value="" disabled selected>Select your option</option>
+                                <option  *ngFor="let currName of newCurrencyCodeArr"> {{currName}}
                                 </option>
                             </select>
                         </div>
                     </div>
                     <br>
                     <div class="form-group col-md-12">
-                            <div class="col-md-6">
-                                    <label class="left">Currency Value:</label>
-                            </div>
-                            <div class="col-md-6">
+                          <div class="col-md-11">
                                 <input type ="text"  id="usd" placeholder="Enter value in USD" class="form-control right"
-                                (keyup)="convertToYen($event)" value="{{convertYenToDollar}}" required/>
+                                (keyup)="convertToFromCurrency($event)" value="{{convertCurrencyValFromTo}}" formControlName="toCurrencyVal" required/>
                             </div>
                     </div>
                 </form>
-        </div>
+          </div>
       </article>
     </div>
   </div>

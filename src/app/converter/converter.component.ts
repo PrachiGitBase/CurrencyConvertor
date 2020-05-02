@@ -18,63 +18,120 @@ export class ConverterComponent  implements OnInit {
     CurrencyFormGroup:FormGroup;
     CurrencyToGroup:FormGroup;
     newCurrencyCodeArr :any;
-    res:any;
+    selectedFromVal: any;
+    fromInputBoxVal:any;
+    selectedToVal:any;
+    toInputBoxVal:any;
+    codeOfFromCurrency:String;
+    codeOfToCurrency:String;
+    fromToConversion:any;
+    toFromConversion:any;
+    convertCurrencyValFromTo:any;
+    convertCurrencyValToFrom:any;
     constructor(private fb:FormBuilder, private currencyService:CurrencyConversionApiService) {}
      
     ngOnInit(){
-      this.showErrorDiv = false;
       this.newCurrencyCodeArr =[];
-      //this.CurrencyArr =[{id:1,Currency:"YEN"},{id:2,Currency:"INDIA"},
-      //{id:3,Currency:"EURO"},{id:4,Currency:"USD"},{id:5,Currency:"CHN"}]
       this.CurrencyFormGroup = this.fb.group({
-        currencyControl:['India']
+        currencyControl:[""],
+        fromCurrencyVal:"",
       });
 
       this.CurrencyToGroup = this.fb.group({
-        currencyToControl:['India']
+        currencyToControl:[""],
+        toCurrencyVal:"",
       });
      
       this.getAllCurrenciesVal();
-    }
-    
-    convertToUsd(event:any) {
-        this.keyUpClick.emit(event.target.value);
-       }
-  
-     hideDangerDiv(){
+
+      console.log(this.newCurrencyCodeArr);
       this.showErrorDiv = false;
     }
+    
+    convertFromToCurrency(event:any) {
+        //this.keyUpClick.emit(event.target.value);
+        debugger;
+        this.selectedFromVal =this.CurrencyFormGroup.controls['currencyControl'].value;
+        this.fromInputBoxVal = this.CurrencyFormGroup.controls['fromCurrencyVal'].value;
+        this.codeOfFromCurrency = this.selectedFromVal.split(" - ");
+       
+        this.selectedToVal = this.CurrencyToGroup.controls['currencyToControl'].value;
+        this.codeOfToCurrency = this.selectedToVal.split(" - ");
+        if((this.selectedFromVal == "" || this.selectedFromVal== null || 
+          this.selectedFromVal == undefined) && (this.selectedToVal == "" ||
+           this.selectedToVal== null || this.selectedToVal == undefined)){
+            this.showErrorDiv = true;
+            return null;
+          }
+          else{
+        this.currencyService.getCurrencyRateVal(this.codeOfFromCurrency[0],this.codeOfToCurrency[0])
+        .subscribe((data)=>{
+          console.log(data);
+          var newCurrencyRate=[];
 
-    convertToYen(event:any) {
-      
-        this.onChange.emit(event.target.value);
+
+          Object.entries(data).forEach((entry,i )=> {
+            let value = entry[1];
+            this.fromToConversion =  (i===0)?value: this.fromToConversion;
+            this.toFromConversion =  (i===1)?value:  this.toFromConversion ;
+          });
+
+        
+          this.convertCurrencyValFromTo =this.fromInputBoxVal * this.fromToConversion;
+          this.CurrencyToGroup.controls['currencyToControl'].setValue = this.convertCurrencyValFromTo;
+        })
+      }
+    }
+  
+
+    convertToFromCurrency(event:any) {
+      //this.keyUpClick.emit(event.target.value);
+      debugger;
+      this.selectedFromVal =this.CurrencyFormGroup.controls['currencyControl'].value;
+      this.fromInputBoxVal = this.CurrencyFormGroup.controls['fromCurrencyVal'].value;
+      this.codeOfFromCurrency = this.selectedFromVal.split(" - ");
+      this.selectedToVal = this.CurrencyToGroup.controls['currencyToControl'].value;
+      this.codeOfToCurrency = this.selectedToVal.split(" - ");
+      this.toInputBoxVal = this.CurrencyToGroup.controls['toCurrencyVal'].value;
+      if((this.selectedFromVal == "" || this.selectedFromVal== null || 
+        this.selectedFromVal == undefined) && (this.selectedToVal == "" ||
+         this.selectedToVal== null || this.selectedToVal == undefined)){
+          this.showErrorDiv = true;
+          return null;
+        }
+        else{
+      this.currencyService.getCurrencyRateVal(this.codeOfFromCurrency[0],this.codeOfToCurrency[0])
+      .subscribe((data)=>{
+       
+        Object.entries(data).forEach((entry,i )=> {
+          let value = entry[1];
+          this.fromToConversion =  (i===0)?value: this.fromToConversion;
+          this.toFromConversion =  (i===1)?value:  this.toFromConversion ;
+        });
+       
+        this.convertCurrencyValToFrom =this.toInputBoxVal * this.toFromConversion;
+        this.CurrencyToGroup.controls['toCurrencyVal'].setValue = this.convertCurrencyValFromTo;
+      })
+    }
+  }
+
+      hideDangerDiv(){
+        this.showErrorDiv = false;
       }
   
      getAllCurrenciesVal(){
-       debugger;
+       
        this.currencyService.getCurrencyCode().subscribe((data)=>{
-        var obj=data.results;
-        //var result =Object.keys(obj).map(e=>obj[e]);
+        var obj=data;
          console.log(obj);
-             for (const key in obj) {
-            let value = obj[key];
-            
-            //optional check for properties from prototype chain
-            if (obj.hasOwnProperty(key)) {
-              //this.newCurrencyCodeArr.push(key);
-              this.res = key;
-              
-            }else{
-              //property from protytpe chain
-            }
-            this.CurrencyArr.push(this.res);
-            this.newCurrencyCodeArr.push(this.res);
+          for (const key in obj.results) {
+            var t = key +" - "+ obj.results[key].currencyName;
+            this.newCurrencyCodeArr.push(t);
           }
-        console.log(this.newCurrencyCodeArr);
-        console.log( this.CurrencyArr);
       
        })
-       // this.newCurrencyCodeArr
       }
+
+     
   }
   
