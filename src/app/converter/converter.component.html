@@ -1,12 +1,13 @@
 <div class="row">
-    <div class="alert alert-danger"   *ngIf="showErrorDiv">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
+    <div class="alert alert-danger"  #changeTheText *ngIf="showErrorDiv">
+        <a href="#" class="close" *ngIf="showErrorDiv" data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
           <i class="fa fa-times"></i> <strong>Danger!</strong> Please select the From and To select box before conversion 
     </div>
-    <div class="alert alert-danger"   *ngIf="showAnotherErrorDiv">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
-          <i class="fa fa-times"></i> <strong>Danger!</strong> Please select different value in From and To select box 
-    </div>
+    <div class="alert alert-danger" *ngIf="showAnotherDiv">
+      <a href="#" class="close"  data-dismiss="alert" aria-label="close" (click)="hideDangerDiv();">&times;</a>
+        <i class="fa fa-times"></i> <strong>Danger!</strong> Please add the input greater than 0
+  </div>
+   
 <div class='left col-md-6' >
     <div id="left-column" class="yen">
       <article>
@@ -18,7 +19,7 @@
                            <h3>From:</h3>
                         </div>
                       <div class="col-md-8 paddingTop">
-                              <select formControlName="currencyControl" class="form-control right"  value="">
+                              <select formControlName="currencyControl" class="form-control right"  value="" (change)="convertFromToCurrency($event)">
                                   <option value="" disabled selected>Select your option</option>
                                   <option  *ngFor="let currName of newCurrencyCodeArr"> {{currName}}
                                   </option>
@@ -28,8 +29,8 @@
                     <br>
                     <div class="form-group col-md-12">
                         <div class="col-md-11">
-                          <input type ="text" id="yen" class="form-control" placeholder="Enter value in Yen" 
-                          (keyup)="convertFromToCurrency($event)" formControlName="fromCurrencyVal"  value="{{convertCurrencyValToFrom}}" required/>
+                          <input type ="text" id="yen" class="form-control" placeholder="Enter value in Yen"  min="0"
+                           formControlName="fromCurrencyVal" (change)="convertFromToVal()"  value="{{convertCurrencyValToFrom}}" required/>
                         </div>
                     </div>
                 </form>
@@ -48,7 +49,7 @@
                            <h3>To:</h3> 
                        </div>
                        <div class="col-md-8 paddingTop">
-                            <select formControlName="currencyToControl" class="form-control right" value="">
+                            <select formControlName="currencyToControl" class="form-control right" value="" (change)="convertToFromCurrency($event)">
                                 <option value="" disabled selected>Select your option</option>
                                 <option  *ngFor="let currName of newCurrencyCodeArr"> {{currName}}
                                 </option>
@@ -58,8 +59,8 @@
                     <br>
                     <div class="form-group col-md-12">
                           <div class="col-md-11">
-                                <input type ="text"  id="usd" placeholder="Enter value in USD" class="form-control right"
-                                (keyup)="convertToFromCurrency($event)" value="{{convertCurrencyValFromTo}}" formControlName="toCurrencyVal" required/>
+                                <input type ="text"  id="usd" placeholder="Enter value in USD" class="form-control right" min="0"
+                                 value="{{convertCurrencyValFromTo}}" (change)="convertToFromVal();" formControlName="toCurrencyVal" required/>
                             </div>
                     </div>
                 </form>
