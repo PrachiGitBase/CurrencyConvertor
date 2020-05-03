@@ -32,6 +32,7 @@ export class ConverterComponent  implements OnInit{
     @ViewChild('changeTheText')
     changeTheText:ElementRef;
     showAnotherDiv:boolean;
+    changeFromInputVal:boolean;
     constructor(private fb:FormBuilder, private currencyService:CurrencyConversionApiService) {}
      
     ngOnInit(){
@@ -49,6 +50,7 @@ export class ConverterComponent  implements OnInit{
       this.getAllCurrenciesVal();
       this.showErrorDiv = false;
       this.showAnotherDiv =false;
+      this.changeFromInputVal=false;
     }
 
  // Function for showing the converted currency value from From select box input to To select box input    
@@ -106,12 +108,9 @@ export class ConverterComponent  implements OnInit{
 // input change call
     convertToFromVal(){
       this.toInputBoxVal = this.CurrencyToGroup.controls['toCurrencyVal'].value;
-      this.fromInputBoxVal = this.CurrencyFormGroup.controls['fromCurrencyVal'].value;
       if((this.toInputBoxVal !="" && this.toInputBoxVal>=0 )){
-        this.getCurrencyRateInObject();
-        this.convertCurrencyValToFrom =this.toInputBoxVal * this.toFromConversion;
-        this.CurrencyFormGroup.controls['fromCurrencyVal'].patchValue = this.convertCurrencyValToFrom;
-        return this.convertCurrencyValToFrom;
+        this.changeFromInputVal = false;
+        return this.getCurrencyRateInObject(this.changeFromInputVal);
       }
       else{
         this.convertCurrencyValToFrom =0;
@@ -121,13 +120,9 @@ export class ConverterComponent  implements OnInit{
 //input change call
     convertFromToVal(){
       this.fromInputBoxVal = this.CurrencyFormGroup.controls['fromCurrencyVal'].value;
-      this.toInputBoxVal = this.CurrencyToGroup.controls['toCurrencyVal'].value;
       if((this.fromInputBoxVal!="" && this.fromInputBoxVal>=0)){
-            
-          this.getCurrencyRateInObject();
-          this.convertCurrencyValFromTo =this.fromInputBoxVal * this.fromToConversion;
-          this.CurrencyToGroup.controls['toCurrencyVal'].patchValue=(this.convertCurrencyValFromTo);
-          return this.convertCurrencyValFromTo;
+          this.changeFromInputVal = true;
+         return  this.getCurrencyRateInObject(this.changeFromInputVal);
       }
       else{
         this.convertCurrencyValFromTo =0;
@@ -136,14 +131,22 @@ export class ConverterComponent  implements OnInit{
     }
 
   // get particular currency converter rate
-    getCurrencyRateInObject(){
+    getCurrencyRateInObject(booleanInputVal){
       Object.entries(this.newCurrencyRate).forEach((entry,i )=> {
         let value = entry[1];
         this.fromToConversion =  (i===0)?value: this.fromToConversion;
         this.toFromConversion =  (i===1)?value:  this.toFromConversion ;
       });
+      if(booleanInputVal == true){
+        this.convertCurrencyValFromTo =this.fromInputBoxVal * this.fromToConversion;
+        this.CurrencyToGroup.controls['toCurrencyVal'].patchValue=(this.convertCurrencyValFromTo);
+      }
+      else{
+        this.convertCurrencyValToFrom =this.toInputBoxVal * this.toFromConversion;
+        this.CurrencyFormGroup.controls['fromCurrencyVal'].patchValue = this.convertCurrencyValToFrom;
+      }
 
-      return this.fromToConversion,this.toFromConversion;
+      return this.convertCurrencyValFromTo ,this.convertCurrencyValToFrom;
     }
   }
   

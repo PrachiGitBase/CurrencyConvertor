@@ -29,7 +29,7 @@
                     <br>
                     <div class="form-group col-md-12">
                         <div class="col-md-11">
-                          <input type ="text" id="yen" class="form-control" placeholder="Enter value in Yen"  min="0"
+                          <input type ="number" id="yen" class="form-control" placeholder="Enter the value"  min="0"
                            formControlName="fromCurrencyVal" (change)="convertFromToVal()"  value="{{convertCurrencyValToFrom}}" required/>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     <br>
                     <div class="form-group col-md-12">
                           <div class="col-md-11">
-                                <input type ="text"  id="usd" placeholder="Enter value in USD" class="form-control right" min="0"
+                                <input type ="number"  id="usd" placeholder="Enter the value" class="form-control right" min="0"
                                  value="{{convertCurrencyValFromTo}}" (change)="convertToFromVal();" formControlName="toCurrencyVal" required/>
                             </div>
                     </div>
